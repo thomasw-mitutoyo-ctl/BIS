@@ -1,0 +1,8 @@
+<Files ~ "(.ini|.md)">
+Order allow,deny
+Deny from all
+</Files>
+
+php_value memory_limit 30M
+php_value post_max_size 100M
+php_value upload_max_filesize 30M

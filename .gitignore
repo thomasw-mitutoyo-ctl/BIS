@@ -1,0 +1,12 @@
+pictures/
+sec/
+weatherProxy/
+Bilderdaemon/
+Weatherdaemon/
+/.vscode/
+/html/pictures*/
+/html/startphp.bat
+/html/startapache.bat
+/config/db_settings.ini
+/config/weather_service_settings.ini
+

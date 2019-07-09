@@ -1,0 +1,268 @@
+/*
+Style for the complete site
+*/
+body {
+    font-family: 'Noto Sans', sans-serif;
+    overflow:hidden;
+    background: #ffffff;
+}
+
+
+/*
+Styles for the header. A wrapper style for the background and a style for the inner content each 
+*/
+
+.head{
+    top:0px;
+    left:0px;
+    width:100%; 
+    border:0px;
+    margin:0px;
+    height:150px;
+    z-index:1;
+}
+
+/*Background for the left header element*/
+.left_head {
+    text-align:center;
+    position:fixed;
+    top:0px;
+    left:0%;
+    width:17%;
+    border:0px;
+    margin:0px;
+    vertical-align:top;
+    background-color: rgba(230, 92, 0, 0.9);
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.4);
+}
+
+/*Content for the left header element*/
+.left_head_inner {
+    vertical-align: center;
+    text-align: center;
+    font-size: 35px;
+
+    color: rgba(230, 230, 230, 1);	
+    
+    background-color: rgba(0, 0, 0, 0.0);
+}
+
+.left_content {
+    top:20px;
+}
+
+.city{
+    text-align: left;
+    font-size: 32px;
+}
+.city_time{
+    margin-top: 10px;
+    font-size: 25px;
+    text-align: left;
+}
+
+/*Background for the center header element*/
+.center_head{
+    width:66%;
+    top:0%;
+    left:17%;
+    position:fixed;
+    text-align:center;
+    z-index:3;
+    box-shadow: 0px 0px 5px 1px rgba(0, 0, 0, 0.4);
+    background-color:rgba(200,200,200,0.8);
+}
+
+/*Content for the center header element*/
+.center_head_inner{
+    vertical-align:center;
+    font-size:80px;
+    text-align:center;
+
+    color: rgba(90, 90, 90, 1);
+    
+    background-color: rgba(0, 0, 0, 0.0);
+}
+
+.center_head_content{
+    vertical-align:center;
+    text-align: center;
+    top: 20px;
+}
+
+/*Background for the right header element*/
+.right_head{
+    background-color: rgba(230, 92, 0, 0.9);
+    text-align:center;
+    position:fixed;
+    top:0px;
+    left:83%;
+    width:17%; 
+    border:0px;
+    margin:0px;
+    vertical-align:center;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.4);
+}
+
+.right_head_inner{
+    text-align:center;
+    background-color: rgba(0, 0, 0, 0.0);
+}
+
+.right_header_h1{
+    color: rgba(230, 230, 230, 1);	
+    font-size:80px;
+    text-align:center;
+    position: fixed;
+    left:83%;
+    width:17%;
+    margin: 0;
+    vertical-align:top;
+    top:10px;
+}
+
+.right_header_h2{
+    color: rgba(230, 230, 230, 1);	
+    font-size:40px;
+    text-align:center;
+    position: fixed;
+    left:83%;
+    width:17%;
+    top:70px;
+}
+
+
+/*Style for the images in the background*/
+.background_image{
+    width:100%;
+    vertical-align: middle;
+}
+
+.pictures{
+    width:100%;
+    height:100%;
+    bottom:0px;
+    position:fixed;
+}
+
+
+/*
+Styles for the ticker at the bottom
+*/
+.ticker{
+    width:66%;
+    left:17%;
+    height:140px;
+    bottom:50px;
+    position:fixed;
+}
+
+.ticker_background{
+    background-color:rgba(230, 92, 0, 0.8);
+    box-shadow: 0px 0px 5px 1px rgba(0, 0, 0, 0.4);
+}
+
+.tickercontainer {
+    margin: 0;
+    padding: 0;
+}
+
+.ticker_mask {
+    position: fixed;
+    overflow: hidden !important;
+}
+
+.ul_ticker {
+    /*Transitions have been added in order set css3 transitions; and have linear easing. Changing these lines you might have unexpected results */
+    -webkit-transition: all 0s linear;
+    -moz-transition: all 0s linear;
+    -o-transition: all 0s linear;
+    transition: all 0s linear;
+    
+    width:66%;
+    height:140px;
+    left:17%;
+    position:relative;
+    
+    font-size: 50px;
+    color: rgba(230, 230, 230, 1);	
+    list-style-type: none;
+    padding: 0px;
+    margin: 0px;
+    overflow: hidden !important;
+}
+
+.ticker_element {
+    float: left;
+    margin-top: 35px;
+    margin-left: 30px;
+}
+
+
+/*Styles for the appointment list*/
+.table-borderless tbody tr td, .table-borderless tbody tr th, .table-borderless thead tr th {
+    border: none !important;
+    overflow: hidden;
+}
+
+.appointment_table_entry{
+    font-size: 32px;
+    text-overflow: ellipsis;
+    color: rgba(90, 90, 90, 1);
+}
+.appointment_table_entry_bold{
+    font-size: 35px;
+    font-weight: bold;
+    color: rgba(90, 90, 90, 1);
+}
+
+.appointments_table{
+    width:66%;
+    
+    top: 230px;
+    bottom:230px;
+    left:17%;
+
+    position:fixed;
+    background-color: rgba(200, 200, 200, 0.8);
+    padding:20px;	
+    text-align:left;	
+    box-shadow: 0px 0px 5px 1px rgba(0, 0, 0, 0.4);
+    border: none !important;
+    overflow: hidden;
+}
+
+
+.noimage{
+    color: #c0c0c0;
+    font-size: 30pt;
+    text-shadow: 0px 0px 5px #c5c5c5;
+    margin: auto;
+    text-align: center;
+    padding: 10px 0;
+}
+
+
+/*
+Styles for the map
+*/
+.map {
+    height: 200px;
+    width: 245px;
+}
+
+.artist{
+    z-index: 1;
+    margin: 5px;
+    text-align: center;
+}
+
+.mapcontainer{
+    background: rgba(200, 200, 200, 0.8);
+    position:absolute;
+    height: 260px;
+    width: 245px;
+    bottom: 20px;
+    right: 20px;
+    box-shadow: 0px 0px 4px 1px rgba(0, 0, 0, 0.4);
+}

@@ -1,0 +1,321 @@
+p {
+	font-size:150%; padding-left:15px;
+}
+body {	
+	font-family: 'Roboto', sans-serif;
+	background-color:rgb(220,220,220);
+	overflow-x: hidden;
+}
+
+thead {
+	background-color:#333;
+	color:rgb(220,220,220);
+}	
+
+tbody{
+	background-color:rgba(256,256,256,0.7);
+}
+
+#head {
+		background-color: #333;
+	color:rgb(256,256,256);
+	text-align:center;
+	box-shadow: 0px 0px 5px 1px rgba(0, 0, 0, 0.4);
+}
+
+#sidenav_bg{
+	background-color: #333;
+	width: 16.5%;
+	height:100%;
+	position: fixed;
+	z-index: -1;
+	box-shadow: 0px 0px 5px 1px rgba(0, 0, 0, 0.4);
+}
+
+.no-entries{
+	text-align:center;
+	color: rgba(60, 60, 60, 0.4);
+	margin: 40px;
+}
+
+#neu {
+	margin-top:20px;
+}
+
+#preview{
+	margin-top:30px;
+}
+
+#about{
+	margin-top:30px;
+	margin-left:0px;
+	padding-left:0px;
+}
+
+#tickerentry{
+	margin-top:30px;
+}
+
+#uploadimages{
+	margin-top:30px;
+}
+
+#checkboxMultipleDays
+{
+	font-size:20px;
+	margin-top:45px;
+
+}
+@media all and (max-width: 1150px) {
+	#checkboxMultipleDays
+	{
+		font-size:15px;
+	}
+	
+}
+
+.btn-secondary {
+background: rgba(256,256,256,0.85);
+color: rgba(60, 60, 60, 1);
+}
+
+.btn-warning {
+background: #F37735;
+color: #FFFFFF;
+border-color: #F37735;
+}
+
+.ticker
+{
+	vertical-align:middle;
+}
+
+.formular
+{
+	background-color: rgb(256,256,256);
+	padding-bottom:40px;
+	margin-top:20px;
+	box-shadow: 0px 0px 5px 1px rgba(0, 0, 0, 0.4);
+}
+	
+.MonthPanel {
+	Font-Size:45px;
+	margin:23px;
+	color:rgba(256,256,256,0.7);
+}
+
+.alignBottom{
+	margin-top:60px;
+}
+
+.right
+{
+	padding-left:17.5%;
+}
+	
+.top {
+	padding-top:40px;
+}
+	
+.sidenav {
+	background-color: rgba(200, 200, 200, 0);
+	font-size: 20px;
+	height: 100%;
+}
+
+.nav{
+	margin-top: 15px;
+}
+
+
+.card{
+	box-shadow: 0px 0px 5px 1px rgba(0, 0, 0, 0.4);
+	background: white;
+	border-radius: 4px;
+}
+
+.table
+{
+	margin-bottom:0px;
+}
+
+@media screen and (max-width: 767px) {
+	.MonthPanel { font-size: 30px; }
+	.right { padding-left: 16px; }
+	#checkboxMultipleDays
+	{
+		margin-top:5px;
+	}
+}
+
+.nopad
+{
+	padding:0px;
+}
+.nopad.despiteleft
+{
+	padding-left:20px;
+}
+.nopad.despiteright
+{
+	padding-right:20px;
+}
+	
+.pager {
+	margin-top: 20px;
+}
+
+.pager  li a{
+	background-color: rgba(0,0,0,0);
+	border: 1px solid rgba(181, 0, 0, 0);
+}
+
+
+.iconleiste
+{
+	margin-top:10px;
+}
+	
+.icons{
+	font-size:12px;
+}
+
+.agenda {
+	padding-top:20px;
+}
+	
+.agenda .agenda-date {
+	width:150px;
+}
+
+.agenda .agenda-end{
+	width:150px;
+}
+	
+#startday{
+	width: 90px;
+}
+
+#endday{
+	width: 90px;
+}
+
+.agenda .agenda-date .dayofmonth {
+	width: 40px;
+	font-size: 36px;
+	line-height: 36px;
+	float: left;
+	text-align: right;
+	margin-right: 10px;
+}
+	
+.agenda .agenda-date .shortdate {
+	font-size: 0.75em;
+}
+
+.agenda .agenda-events {
+	padding:10px;
+}
+	
+.nopadleft
+{
+	padding-left:0px;
+}
+	
+@media (max-width: 767px) {}
+
+
+.Optionen
+{
+	width:200px;
+}
+	
+.DivAddIcon
+{
+	margin-top:10px;
+}
+
+.wordbreak
+{
+	white-space: normal;
+}
+
+.loader {
+	border: 6px solid #f3f3f3; /* Light grey */
+	border-top: 6px solid #F37735; /* Blue */
+	border-radius: 50%;
+	width: 50px;
+	height: 50px;
+
+	display: block;
+    margin: 10px;
+	animation: spin 2s linear infinite;
+}
+
+#loader{
+	position: absolute;
+}
+
+.hrflat{
+	height: 0px;
+	margin: 0px;
+	padding: 0px;
+}
+
+@keyframes spin {
+	0% { transform: rotate(0deg); }
+	100% { transform: rotate(360deg); }
+}
+
+.spacer{
+	margin-top: 30px;
+}
+
+.delete-image{
+    position: absolute;
+    right: 5px;
+	top: 5px;
+	z-index: 1;
+}
+
+
+.grid{
+	padding-top: 20px;
+	width: 100%;
+}
+
+.grid li{
+	display: inline-block;
+	position: relative;
+	width: 200px;
+	margin: 5px;
+	height: 200px;
+	border: 1px solid rgb(194, 194, 194);
+	border-radius: 2px;
+	text-align: center;
+	padding: 10px;
+  	vertical-align: bottom;
+}
+
+.grid img{
+	object-fit: contain;
+	max-height: 130px;
+	max-width: 100%;
+}
+
+.grid p{
+	font-size: 15px;
+	line-height: 15px;
+	height: 15px;
+	margin: 0px;
+	margin-top: 5px;
+	padding: 0px;
+	text-align: left;
+}
+
+.empty-state{
+	font-size: 30px;
+	text-align: center;
+	color: #a0a0a0;
+	display: none;
+}

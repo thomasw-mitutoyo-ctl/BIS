@@ -1,0 +1,4 @@
+Server = "bis.example.com"
+Username = "hal"
+Password = "kubrick2001"
+DatabaseName = "testdb"

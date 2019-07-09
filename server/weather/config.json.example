@@ -1,0 +1,15 @@
+{
+  "Hostname": "localhost",
+  "ServerPort": 9999,
+  "PushServerPort": 8888,
+  "OpenWeatherMapPollInterval": 600,
+  "OpenWeatherMapToken": "<your token here>",
+  "OpenWeatherMapCities":
+  {
+    "Seattle": "5809844",
+    "Kawasaki": "1859642",
+    "Oberndorf": "2859654",
+    "Leuven": "2792482",
+    "Los Angeles": "5368361"
+  }
+}
