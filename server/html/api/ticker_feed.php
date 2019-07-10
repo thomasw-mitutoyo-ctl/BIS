@@ -81,7 +81,6 @@ while($i < 10){
         echo "data: ".$json."\n\n";
         ob_flush();
         flush();
-        //die();
         $sent_rows_json = $json;
     }
 
