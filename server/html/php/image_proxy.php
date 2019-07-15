@@ -42,10 +42,21 @@ function pictureExists($path){
 }
 
 function deletePicture($path){
-    if(pictureExists($path)){
-        return unlink(__DIR__."/../".$path);
-    }
-    return true;
+     // Images must be in the images directory. Do not allow pictures elsewhere
+     if (substr($path, 0, strlen("pictures/")) !== "pictures/") return false;
+     // All images must be jpg. Do not allow other file types, e.g. deleting PHP scripts
+     if (substr($path, -strlen(".jpg")) !== ".jpg") return false;
+     // Do not allow going up in the directory structure
+     if (strpos($path, "/../") !== false) return false;
+     // Ensure that full path is inside our directory
+     if (strpos(realpath(__DIR__."/../".$path), realpath(__DIR__."/../pictures/")) === 0)
+     {
+         if(pictureExists($path)){
+             return unlink(__DIR__."/../".$path);
+         }
+     }
+     return false;
 }
+
 
 ?>
