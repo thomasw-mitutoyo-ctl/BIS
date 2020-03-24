@@ -188,7 +188,7 @@ else
 	mysql -u root -p -e "CREATE DATABASE bisdb;"
 fi
 
-if [ "`mysql -u root -p -e \"select user from mysql.user\"| grep bis | wc -l`" -eq "1" ] ;then
+if [ "`mysql -u root -p -e "select user from mysql.user"| grep bis | wc -l`" -eq "1" ] ;then
 	succ "Database user already exists"
 else
 	err "Database user does not exist"
@@ -212,12 +212,12 @@ pythonlib() {
 
 pythonlib requests
 
-if [ -x /var/www/bis/weather/WeatherServer.py ] ;then
+if [ -x /var/www/bis/server/weather/WeatherServer.py ] ;then
 	succ "Weatherdaemon script is executable"
 else
 	err "Weatherdaemon script is not executable"
 	doing "Changing permissions ..."
-	chmod +x /var/www/bis/weather/WeatherServer.py
+	chmod +x /var/www/bis/server/weather/WeatherServer.py
 fi
 
 if  id -u weatherdaemon > /dev/null ;then
@@ -228,28 +228,28 @@ else
 	useradd -r -s /bin/false weatherdaemon
 fi
 
-if [ "`stat --format %U /var/www/bis/weather/`" = "weatherdaemon" ] ;then
+if [ "`stat --format %U /var/www/bis/server/weather/`" = "weatherdaemon" ] ;then
 	succ "Weather script is owned by weatherdaemon"
 else
 	err "Weather script does not belong Weatherdaemon"
 	doing "Changing owner ..."
-	chown -R weatherdaemon:weatherdaemon /var/www/bis/weather/
+	chown -R weatherdaemon:weatherdaemon /var/www/bis/server/weather/
 fi
 
-if [ -f /var/www/bis/weather/config.json ] ;then
+if [ -f /var/www/bis/server/weather/config.json ] ;then
 	succ "Weatherdaemon config file exists"
 else
 	err "Weatherdaemon config file not present"
 	doing "Creating ..."
-	cp /var/www/bis/weather/config.json.example /var/www/bis/weather/config.json
+	cp /var/www/bis/server/weather/config.json.example /var/www/bis/server/weather/config.json
 fi
 
-if [ "`cat /var/www/bis/weather/config.json | grep MapToken | grep your | wc -l`" -eq "0" ] ;then
+if [ "`cat /var/www/bis/server/weather/config.json | grep MapToken | grep your | wc -l`" -eq "0" ] ;then
 	succ "Weatherdaemon seems to have a token"
 else
 	err "Weatherdaemon does not have a token"
 	doing "Inserting token ..."
-	sed -i -E "s/.your token here./$2/" /var/www/bis/weather/config.json
+	sed -i -E "s/.your token here./$2/" /var/www/bis/server/weather/config.json
 fi
 
 if [ -f /etc/systemd/system/weatherdaemon.service ] ;then
@@ -257,7 +257,7 @@ if [ -f /etc/systemd/system/weatherdaemon.service ] ;then
 else
 	err "Weatherdaemon service file does not exist"
 	doing "Creating ..."
-	cp /var/www/bis/weather/weatherdaemon.service /etc/systemd/system/
+	cp /var/www/bis/server/weather/weatherdaemon.service /etc/systemd/system/
 fi
 
 if [ "`cat /etc/systemd/system/weatherdaemon.service | grep WorkingDir | grep /etc | wc -l`" -eq "0" ] ;then
@@ -265,7 +265,7 @@ if [ "`cat /etc/systemd/system/weatherdaemon.service | grep WorkingDir | grep /e
 else
 	err "Weatherdaemon is running in /etc as working directory"
 	doing "Configuring ..."
-	sed -i -E "s_WorkingDirectory=.*_WorkingDirectory=/var/www/bis/weather_" /etc/systemd/system/weatherdaemon.service
+	sed -i -E "s_WorkingDirectory=.*_WorkingDirectory=/var/www/bis/server/weather_" /etc/systemd/system/weatherdaemon.service
 fi
 
 if [ "`cat /etc/systemd/system/weatherdaemon.service | grep ExecStart | grep /etc | wc -l`" -eq "0" ] ;then
@@ -273,7 +273,7 @@ if [ "`cat /etc/systemd/system/weatherdaemon.service | grep ExecStart | grep /et
 else
 	err "Weatherdaemon is running from /etc"
 	doing "Configuring ..."
-	sed -i -E "s_ExecStart=.*_ExecStart=/var/www/bis/weather/WeatherServer.py_" /etc/systemd/system/weatherdaemon.service
+	sed -i -E "s_ExecStart=.*_ExecStart=/var/www/bis/server/weather/WeatherServer.py_" /etc/systemd/system/weatherdaemon.service
 fi
 
 if [ -f /var/log/weatherdaemon.log ] ;then
@@ -333,7 +333,7 @@ else
 	err "Logrotate is not configured yet"
 	doing "Configuring ..."
 	# Do not copy, because this might contain Windows CRLF line breaks
-	tr -d '\r' < /var/www/bis/weather/logrotate > /etc/logrotate.d/weatherdaemon
+	tr -d '\r' < /var/www/bis/server/weather/logrotate > /etc/logrotate.d/weatherdaemon
 fi
 
 if [ -f /var/www/bis/config/weather_service_settings.ini ] ;then
