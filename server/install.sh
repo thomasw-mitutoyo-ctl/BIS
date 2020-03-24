@@ -25,7 +25,7 @@ inst() {
 if [ "$2" = "" ] ;then
         err "Wrong parameters"
         echo "Usage: $0 <database password> <api token> <fqdn> [<tools>]"
-        echo "   <database password>: Password to use for the MySQL bisdb datab$"
+        echo "   <database password>: Password to use for the MySQL bisdb database"
 	echo "   <api token>:         API token of OpenWeatherMap.org"
 	echo "   <fqdn>:              Host name (fully qualified)"
 	echo "                        Maybe `hostname -f`"
@@ -38,7 +38,7 @@ fi
 if [ "$4" = "yes" ] ;then
     inst dnsutils
     inst lynx
-}
+fi
 
 # Install LAMP packages
 inst apache2
