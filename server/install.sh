@@ -69,6 +69,8 @@ if [ -f /var/www/bis/config/db_settings.ini ] ;then
 else
 	err "Database settings are not configured"
 	doing "Configuring ..."
+	mkdir /var/www/bis
+	mkdir /var/www/bis/config
 	cat <<-EOF > /var/www/bis/config/db_settings.ini
 Server = "localhost"
 Username = "bis"
