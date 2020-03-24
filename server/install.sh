@@ -40,6 +40,8 @@ if [ "$2" = "" ] ;then
         exit 3
 fi
 
+apt update
+
 if [ "$4" = "yes" ] ;then
     inst dnsutils
     inst lynx
