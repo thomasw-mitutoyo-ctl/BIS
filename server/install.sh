@@ -113,7 +113,6 @@ else
 	err "Apache config file not found"
 	doing "Creating ..."
 	cat <<EOF > /etc/apache2/sites-available/bis.conf
-Listen 80
 <VirtualHost *:80>
 	ServerName $3
 	DocumentRoot "/var/www/bis/html"
