@@ -81,10 +81,10 @@ EOF
 fi
 
 # PHP
-if [ "`php -v | grep PHP | grep 7.0 | wc -l`" -eq "1" ] ;then
-	succ "PHP 7.0 can execute"
+if [ "`php -v | grep "PHP 7." | wc -l`" -eq "1" ] ;then
+	succ "PHP 7 can execute"
 else
-	err "PHP 7.0 cannot execute"
+	err "PHP 7 cannot execute"
 	err "Don't know how this could be fixed. Is a newer version installed?"
 	exit 3
 fi
