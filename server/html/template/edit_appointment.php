@@ -63,7 +63,7 @@ if(isset($_GET['command']) && $_GET['command'] == "edit" && isset($_GET["id"])) 
                 <div class="col-sm-8 form-group">
                     <input type="text" class="form-control"  maxlength="30" rows="5" id="place" name="description" 
                     placeholder="Wo findet der Termin statt?" data-toggle="tooltip" data-placement="left" 
-                    title="Zum Beispiel: Kawasaki, Utsunomiya, Osaka - Max. 30 Zeichen" value=<?php echo '"'.$a["location"].'"' ?>>
+                    title="Zum Beispiel: Raum A, Sitzungssaal, Cafeteria - Max. 30 Zeichen" value=<?php echo '"'.$a["location"].'"' ?>>
                 </div>
                 <div class="col-sm-2"></div>
             </div>
