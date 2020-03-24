@@ -338,3 +338,7 @@ Port = 9999
 EOF
 	chown www-data:www-data /var/www/bis/config/weather_service_settings.ini
 fi
+
+# Provide a writeable directory for images
+mkdir /var/www/bis/server/html/pictures
+chown www-data:www-data /var/www/bis/server/html/pictures
