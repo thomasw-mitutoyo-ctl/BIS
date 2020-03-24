@@ -22,6 +22,11 @@ inst() {
 	fi
 }
 
+if [[ $EUID -ne 0 ]]; then
+	err "This script must be run as root, so that it can install packages and change configuration."
+	exit 3
+fi
+
 if [ "$2" = "" ] ;then
         err "Wrong parameters"
         echo "Usage: $0 <database password> <api token> <fqdn> [<tools>]"
