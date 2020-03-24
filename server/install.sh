@@ -57,6 +57,29 @@ inst php7.0-mbstring
 inst php7.0-gd
 inst libapache2-mod-php7.0
 
+# Git
+inst git
+
+# Clone repository
+if [ -d /var/www/bis/.git ] ;then
+	succ "Git repository already cloned"
+else
+	err "Git repository not cloned yet"
+	doing "Cloning ..."
+	git clone https://github.com/thomasw-mitutoyo-ctl/BIS /var/www/bis/
+fi
+
+pushd . >/dev/null
+cd /var/www/bis
+if [ "`git rev-parse @`" = "`git rev-parse @{u}`" ] ;then
+	succ "Repository is up-to-date"
+else
+	err "Repository needs updates"
+	doing "Pulling ..."
+	git pull
+fi
+popd >/dev/null
+
 # MySQL Service
 if [ "`service mysql status | grep running | wc -l`" -eq "1" ] ;then
 	succ "MySQL service is started"
@@ -71,7 +94,6 @@ if [ -f /var/www/bis/config/db_settings.ini ] ;then
 else
 	err "Database settings are not configured"
 	doing "Configuring ..."
-	mkdir /var/www/bis
 	mkdir /var/www/bis/config
 	cat <<-EOF > /var/www/bis/config/db_settings.ini
 Server = "localhost"
@@ -90,9 +112,6 @@ else
 	err "Don't know how this could be fixed. Is a newer version installed?"
 	exit 3
 fi
-
-# Git
-inst git
 
 # Python
 inst python-pip
@@ -159,7 +178,7 @@ fi
 
 # Create MySQL database
 
-echo -e "\e[94mWhen prompted for a password, that's the MySQL password.\e[39m"
+echo -e "\e[94mWhen prompted for a password, that's the MySQL password of user root.\e[39m"
 
 if [ "`echo SHOW DATABASES | mysql -u root -p | grep bisdb | wc -l`" -eq "1" ] ;then
 	succ "BIS database already available"
@@ -178,26 +197,7 @@ else
 	mysql -u root -p -e "GRANT ALL ON bisdb.* TO bis@localhost; FLUSH PRIVILEGES;"
 fi
 
-# Clone repository
 
-if [ -d /var/www/bis/.git ] ;then
-	succ "Git repository already cloned"
-else
-	err "Git repository not cloned yet"
-	doing "Cloning ..."
-	git clone https://github.com/thomasw-mitutoyo-ctl/BIS /var/www/bis/
-fi
-
-pushd . >/dev/null
-cd /var/www/bis
-if [ "`git rev-parse @`" = "`git rev-parse @{u}`" ] ;then
-	succ "Repository is up-to-date"
-else
-	err "Repository needs updates"
-	doing "Pulling ..."
-	git pull
-fi
-popd >/dev/null
 
 # Install weatherdaemon
 pythonlib() {
