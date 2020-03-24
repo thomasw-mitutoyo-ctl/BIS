@@ -116,8 +116,8 @@ else
 Listen 80
 <VirtualHost *:80>
 	ServerName $3
-	DocumentRoot "/var/www/bis/html"
-	<Directory /var/www/bis/html>
+	DocumentRoot "/var/www/bis/server/html"
+	<Directory /var/www/bis/server/html>
 		Options FollowSymLinks
 		AllowOverride All
 		Require all granted
