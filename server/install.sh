@@ -338,4 +338,8 @@ EOF
 	chown www-data:www-data /var/www/bis/server/config/weather_service_settings.ini
 fi
 
+# Provide a writeable directory for images
+mkdir /var/www/bis/server/html/pictures
+chown www-data:www-data /var/www/bis/server/html/pictures
+
 doing "If things went well here, go to http://$3/setup/ to complete the configuration."
