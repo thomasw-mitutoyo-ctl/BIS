@@ -59,18 +59,18 @@ else
 	service mysql start
 fi
 
-if [ -f /var/www/bis/config/db_settings.ini ] ;then
+if [ -f /var/www/bis/server/config/db_settings.ini ] ;then
 	succ "Database settings seem configured"
 else
 	err "Database settings are not configured"
 	doing "Configuring ..."
-	cat <<-EOF > /var/www/bis/config/db_settings.ini
+	cat <<-EOF > /var/www/bis/server/config/db_settings.ini
 Server = "localhost"
 Username = "bis"
 Password = "$1"
 DatabaseName = "bisdb"
 EOF
-	chown www-data:www-data /var/www/bis/config/db_settings.ini
+	chown www-data:www-data /var/www/bis/server/config/db_settings.ini
 fi
 
 # PHP
@@ -113,11 +113,10 @@ else
 	err "Apache config file not found"
 	doing "Creating ..."
 	cat <<EOF > /etc/apache2/sites-available/bis.conf
-Listen 80
 <VirtualHost *:80>
 	ServerName $3
-	DocumentRoot "/var/www/bis/html"
-	<Directory /var/www/bis/html>
+	DocumentRoot "/var/www/bis/server/html"
+	<Directory /var/www/bis/server/html>
 		Options FollowSymLinks
 		AllowOverride All
 		Require all granted
@@ -327,18 +326,20 @@ else
 	tr -d '\r' < /var/www/bis/weather/logrotate > /etc/logrotate.d/weatherdaemon
 fi
 
-if [ -f /var/www/bis/config/weather_service_settings.ini ] ;then
+if [ -f /var/www/bis/server/config/weather_service_settings.ini ] ;then
 	succ "Apache knows where to find weather data"
 else
 	err "Apache does not find weather data yet"
 	doing "Configuring ..."
-	cat <<-EOF > /var/www/bis/config/weather_service_settings.ini
+	cat <<-EOF > /var/www/bis/server/config/weather_service_settings.ini
 Server = "$3"
 Port = 9999
 EOF
-	chown www-data:www-data /var/www/bis/config/weather_service_settings.ini
+	chown www-data:www-data /var/www/bis/server/config/weather_service_settings.ini
 fi
 
 # Provide a writeable directory for images
 mkdir /var/www/bis/server/html/pictures
 chown www-data:www-data /var/www/bis/server/html/pictures
+
+doing "If things went well here, go to http://$3/setup/ to complete the configuration."
