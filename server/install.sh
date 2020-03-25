@@ -22,10 +22,15 @@ inst() {
 	fi
 }
 
+if [[ $EUID -ne 0 ]]; then
+	err "This script must be run as root, so that it can install packages and change configuration."
+	exit 3
+fi
+
 if [ "$2" = "" ] ;then
         err "Wrong parameters"
         echo "Usage: $0 <database password> <api token> <fqdn> [<tools>]"
-        echo "   <database password>: Password to use for the MySQL bisdb datab$"
+        echo "   <database password>: Password to use for the MySQL bisdb database"
 	echo "   <api token>:         API token of OpenWeatherMap.org"
 	echo "   <fqdn>:              Host name (fully qualified)"
 	echo "                        Maybe `hostname -f`"
@@ -35,10 +40,12 @@ if [ "$2" = "" ] ;then
         exit 3
 fi
 
+apt update
+
 if [ "$4" = "yes" ] ;then
     inst dnsutils
     inst lynx
-}
+fi
 
 # Install LAMP packages
 inst apache2
@@ -49,6 +56,29 @@ inst php7.0-mysql
 inst php7.0-mbstring
 inst php7.0-gd
 inst libapache2-mod-php7.0
+
+# Git
+inst git
+
+# Clone repository
+if [ -d /var/www/bis/.git ] ;then
+	succ "Git repository already cloned"
+else
+	err "Git repository not cloned yet"
+	doing "Cloning ..."
+	git clone https://github.com/thomasw-mitutoyo-ctl/BIS /var/www/bis/
+fi
+
+pushd . >/dev/null
+cd /var/www/bis
+if [ "`git rev-parse @`" = "`git rev-parse @{u}`" ] ;then
+	succ "Repository is up-to-date"
+else
+	err "Repository needs updates"
+	doing "Pulling ..."
+	git pull
+fi
+popd >/dev/null
 
 # MySQL Service
 if [ "`service mysql status | grep running | wc -l`" -eq "1" ] ;then
@@ -64,6 +94,7 @@ if [ -f /var/www/bis/server/config/db_settings.ini ] ;then
 else
 	err "Database settings are not configured"
 	doing "Configuring ..."
+	mkdir /var/www/bis/server/config
 	cat <<-EOF > /var/www/bis/server/config/db_settings.ini
 Server = "localhost"
 Username = "bis"
@@ -74,16 +105,13 @@ EOF
 fi
 
 # PHP
-if [ "`php -v | grep PHP | grep 7.0 | wc -l`" -eq "1" ] ;then
-	succ "PHP 7.0 can execute"
+if [ "`php -v | grep "PHP 7." | wc -l`" -eq "1" ] ;then
+	succ "PHP 7 can execute"
 else
-	err "PHP 7.0 cannot execute"
+	err "PHP 7 cannot execute"
 	err "Don't know how this could be fixed. Is a newer version installed?"
 	exit 3
 fi
-
-# Git
-inst git
 
 # Python
 inst python-pip
@@ -149,7 +177,7 @@ fi
 
 # Create MySQL database
 
-echo -e "\e[94mWhen prompted for a password, that's the MySQL password.\e[39m"
+echo -e "\e[94mWhen prompted for a password, that's the MySQL password of user root.\e[39m"
 
 if [ "`echo SHOW DATABASES | mysql -u root -p | grep bisdb | wc -l`" -eq "1" ] ;then
 	succ "BIS database already available"
@@ -159,7 +187,7 @@ else
 	mysql -u root -p -e "CREATE DATABASE bisdb;"
 fi
 
-if [ "`mysql -u root -p -e \"select user from mysql.user\"| grep bis | wc -l`" -eq "1" ] ;then
+if [ "`mysql -u root -p -e "select user from mysql.user"| grep bis | wc -l`" -eq "1" ] ;then
 	succ "Database user already exists"
 else
 	err "Database user does not exist"
@@ -168,26 +196,7 @@ else
 	mysql -u root -p -e "GRANT ALL ON bisdb.* TO bis@localhost; FLUSH PRIVILEGES;"
 fi
 
-# Clone repository
 
-if [ -d /var/www/bis/.git ] ;then
-	succ "Git repository already cloned"
-else
-	err "Git repository not cloned yet"
-	doing "Cloning ..."
-	git clone https://github.com/thomasw-mitutoyo-ctl/BIS /var/www/bis/
-fi
-
-pushd . >/dev/null
-cd /var/www/bis
-if [ "`git rev-parse @`" = "`git rev-parse @{u}`" ] ;then
-	succ "Repository is up-to-date"
-else
-	err "Repository needs updates"
-	doing "Pulling ..."
-	git pull
-fi
-popd >/dev/null
 
 # Install weatherdaemon
 pythonlib() {
@@ -202,12 +211,12 @@ pythonlib() {
 
 pythonlib requests
 
-if [ -x /var/www/bis/weather/WeatherServer.py ] ;then
+if [ -x /var/www/bis/server/weather/WeatherServer.py ] ;then
 	succ "Weatherdaemon script is executable"
 else
 	err "Weatherdaemon script is not executable"
 	doing "Changing permissions ..."
-	chmod +x /var/www/bis/weather/WeatherServer.py
+	chmod +x /var/www/bis/server/weather/WeatherServer.py
 fi
 
 if  id -u weatherdaemon > /dev/null ;then
@@ -218,28 +227,28 @@ else
 	useradd -r -s /bin/false weatherdaemon
 fi
 
-if [ "`stat --format %U /var/www/bis/weather/`" = "weatherdaemon" ] ;then
+if [ "`stat --format %U /var/www/bis/server/weather/`" = "weatherdaemon" ] ;then
 	succ "Weather script is owned by weatherdaemon"
 else
 	err "Weather script does not belong Weatherdaemon"
 	doing "Changing owner ..."
-	chown -R weatherdaemon:weatherdaemon /var/www/bis/weather/
+	chown -R weatherdaemon:weatherdaemon /var/www/bis/server/weather/
 fi
 
-if [ -f /var/www/bis/weather/config.json ] ;then
+if [ -f /var/www/bis/server/weather/config.json ] ;then
 	succ "Weatherdaemon config file exists"
 else
 	err "Weatherdaemon config file not present"
 	doing "Creating ..."
-	cp /var/www/bis/weather/config.json.example /var/www/bis/weather/config.json
+	cp /var/www/bis/server/weather/config.json.example /var/www/bis/server/weather/config.json
 fi
 
-if [ "`cat /var/www/bis/weather/config.json | grep MapToken | grep your | wc -l`" -eq "0" ] ;then
+if [ "`cat /var/www/bis/server/weather/config.json | grep MapToken | grep your | wc -l`" -eq "0" ] ;then
 	succ "Weatherdaemon seems to have a token"
 else
 	err "Weatherdaemon does not have a token"
 	doing "Inserting token ..."
-	sed -i -E "s/.your token here./$2/" /var/www/bis/weather/config.json
+	sed -i -E "s/.your token here./$2/" /var/www/bis/server/weather/config.json
 fi
 
 if [ -f /etc/systemd/system/weatherdaemon.service ] ;then
@@ -247,7 +256,7 @@ if [ -f /etc/systemd/system/weatherdaemon.service ] ;then
 else
 	err "Weatherdaemon service file does not exist"
 	doing "Creating ..."
-	cp /var/www/bis/weather/weatherdaemon.service /etc/systemd/system/
+	cp /var/www/bis/server/weather/weatherdaemon.service /etc/systemd/system/
 fi
 
 if [ "`cat /etc/systemd/system/weatherdaemon.service | grep WorkingDir | grep /etc | wc -l`" -eq "0" ] ;then
@@ -255,7 +264,7 @@ if [ "`cat /etc/systemd/system/weatherdaemon.service | grep WorkingDir | grep /e
 else
 	err "Weatherdaemon is running in /etc as working directory"
 	doing "Configuring ..."
-	sed -i -E "s_WorkingDirectory=.*_WorkingDirectory=/var/www/bis/weather_" /etc/systemd/system/weatherdaemon.service
+	sed -i -E "s_WorkingDirectory=.*_WorkingDirectory=/var/www/bis/server/weather_" /etc/systemd/system/weatherdaemon.service
 fi
 
 if [ "`cat /etc/systemd/system/weatherdaemon.service | grep ExecStart | grep /etc | wc -l`" -eq "0" ] ;then
@@ -263,7 +272,7 @@ if [ "`cat /etc/systemd/system/weatherdaemon.service | grep ExecStart | grep /et
 else
 	err "Weatherdaemon is running from /etc"
 	doing "Configuring ..."
-	sed -i -E "s_ExecStart=.*_ExecStart=/var/www/bis/weather/WeatherServer.py_" /etc/systemd/system/weatherdaemon.service
+	sed -i -E "s_ExecStart=.*_ExecStart=/var/www/bis/server/weather/WeatherServer.py_" /etc/systemd/system/weatherdaemon.service
 fi
 
 if [ -f /var/log/weatherdaemon.log ] ;then
@@ -323,7 +332,7 @@ else
 	err "Logrotate is not configured yet"
 	doing "Configuring ..."
 	# Do not copy, because this might contain Windows CRLF line breaks
-	tr -d '\r' < /var/www/bis/weather/logrotate > /etc/logrotate.d/weatherdaemon
+	tr -d '\r' < /var/www/bis/server/weather/logrotate > /etc/logrotate.d/weatherdaemon
 fi
 
 if [ -f /var/www/bis/server/config/weather_service_settings.ini ] ;then
