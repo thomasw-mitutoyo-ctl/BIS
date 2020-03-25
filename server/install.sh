@@ -337,3 +337,5 @@ Port = 9999
 EOF
 	chown www-data:www-data /var/www/bis/server/config/weather_service_settings.ini
 fi
+
+doing "If things went well here, go to http://$3/setup/ to complete the configuration."
