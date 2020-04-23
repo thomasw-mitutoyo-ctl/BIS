@@ -2,29 +2,29 @@
 
 require_once __DIR__."/http_helpers.php";
 
-function installPrometheus($args){
+function installServer($args){
 
     // Setup the database
     try{
         $success = initializeDatabase($args);
 
         if($success){
-            createSuccessMessage("Database setup successful");
+            createSuccessMessage("Datenbank-Einrichtung erfolgreich");
         }
         else{
-            createErrorMessage("Database setup failed");
+            createErrorMessage("Datenbank-Einrichtung fehlgeschlagen");
         }
     }catch (Exception $ex) {
-        createErrorMessage("Database setup failed");
+        createErrorMessage("Datenbank-Einrichtung fehlgeschlagen");
     }
 
     // Setup the weather daemon
     try{
         installWeatherDaemon($args);
 
-        createSuccessMessage("Weather daemon setup successful");
+        createSuccessMessage("Wetter Daemon erfolgreich eingerichtet");
     }catch (Exception $ex) {
-        createErrorMessage("Weather daemon setup failed");
+        createErrorMessage("Wetter Daemon Einrichtung fehlgeschlagen");
     }
 }
 

@@ -28,7 +28,7 @@ function handleSetupRequest(){
         $settings["weatherServer"] = $_SESSION["weatherServer"];
         $settings["weatherPort"] = $_SESSION["weatherPort"];
 
-        installPrometheus($settings);
+        installServer($settings);
         
         createButton("Zur BIS Administration", "../admin.php");
     }
@@ -40,7 +40,7 @@ function checkPrerequisites(){
     $prerequisites_available &= checkExtensions();
     $prerequisites_available &= checkGitInstalled();
 
-    createButton("Prometheus installieren", "index.php?state=requestsettings");
+    createButton("Installieren", "index.php?state=requestsettings");
 
     return $prerequisites_available;
 }
@@ -48,7 +48,7 @@ function checkPrerequisites(){
 function checkExtensions(){
     // Check if MySQLi is loaded
     if(!extension_loaded("mysqli")){
-        echo "MySQLi module is not loaded! Enable it in the php.ini file";
+        echo "MySQLi Modul nicht geladen. Aktivieren Sie es in php.ini";
         return false;
     }
 
@@ -69,16 +69,16 @@ function requestSettings(){
     echo "<form action=\"index.php?state=checksettings\" method=\"post\">";
     global $config;
     $settings = parse_ini_file($config["DbIniFile"], false);
-    createLabel("MySQL configuration");
+    createLabel("MySQL Konfiguration");
     createSettingsElement("MySQL Server", "MySQLServer", $settings["Server"]);
-    createSettingsElement("MySQL Username", "MySQLUsername", $settings["Username"]);
-    createPasswordSettingsElement("MySQL Password", "MySQLPassword", $settings["Password"]);
-    createSettingsElement("MySQL Databasename", "MySQLDatabasename", $settings["DatabaseName"]);
-    createBoolSettingsElement("Setup database schema", "SetupDBSchema");
+    createSettingsElement("MySQL Benutzername", "MySQLUsername", $settings["Username"]);
+    createPasswordSettingsElement("MySQL Passwort für o.g. Benutzer", "MySQLPassword", $settings["Password"]);
+    createSettingsElement("MySQL Datenbank", "MySQLDatabasename", $settings["DatabaseName"]);
+    createBoolSettingsElement("Datenbank-Schema anlegen", "SetupDBSchema");
     $weather = parse_ini_file($config["WeatherIniFile"], false);
-    createLabel("Weather daemon configuration");
-    createSettingsElement("WeatherDaemon Server", "WeatherDaemonServer", $weather["Server"]);
-    createSettingsElement("WeatherDaemon Port", "WeatherDaemonPort", $weather["Port"]);
+    createLabel("Wetter Daemon Konfiguration");
+    createSettingsElement("Server", "WeatherDaemonServer", $weather["Server"]);
+    createSettingsElement("Port", "WeatherDaemonPort", $weather["Port"]);
 
     echo "<p><input type=\"submit\" class=\"btn btn-primary\" /></p>";
     echo "</form>";
@@ -108,7 +108,7 @@ function checkSettings(){
     $_SESSION["weatherServer"] = $weatherServer;
     $_SESSION["weatherPort"] = $weatherPort;
 
-    createLabel3("Ready to install!");
+    createLabel3("Bereit zum Installieren.");
     createButton("Zurück", "index.php?state=requestsettings");
     createButton("Installieren", "index.php?state=install");
 }
